@@ -1,0 +1,6 @@
+time: 492; current trace: EXEC program1, 40 // Test case 4 — Nested EXEC + FORK inside an external program (tests recursion and parent/child flow)
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   0 |    program1 |               4 |   10 | running |
++------------------------------------------------------+

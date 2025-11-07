@@ -1,0 +1,12 @@
+EXEC program1, 40 // Test case 4 — Nested EXEC + FORK inside an external program (tests recursion and parent/child flow)
+program1, 12
+program2, 5
+CPU, 20
+FORK, 10
+IF_CHILD, 0
+EXEC program2, 30
+IF_PARENT, 0
+CPU, 15
+ENDIF, 0
+CPU, 10
+CPU, 50
