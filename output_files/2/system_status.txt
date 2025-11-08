@@ -6,7 +6,6 @@ time: 31; current trace: FORK, 17
 |   0 |        init |               6 |    1 | waiting |
 +------------------------------------------------------+
 time: 220; current trace: EXEC program1, 16  //exec is called by child 
-c copied the new process onto init. Notice how the partition was reassigned
 +------------------------------------------------------+
 | PID |program name |partition number | size |   state |
 +------------------------------------------------------+
@@ -22,7 +21,6 @@ time: 249; current trace: FORK, 15
 |   1 |    program1 |               4 |   10 | waiting |
 +------------------------------------------------------+
 time: 530; current trace: EXEC program2, 33
-c copied the new process onto init. Notice how the partition was reassigned
 +------------------------------------------------------+
 | PID |program name |partition number | size |   state |
 +------------------------------------------------------+
@@ -31,10 +29,9 @@ c copied the new process onto init. Notice how the partition was reassigned
 |   1 |    program1 |               4 |   10 | waiting |
 +------------------------------------------------------+
 time: 864; current trace: EXEC program2, 33
-c copied the new process onto init. Notice how the partition was reassigned
 +------------------------------------------------------+
 | PID |program name |partition number | size |   state |
 +------------------------------------------------------+
-|   1 |    program2 |               2 |   15 | running |
+|   1 |    program2 |               3 |   15 | running |
 |   0 |        init |               6 |    1 | waiting |
 +------------------------------------------------------+

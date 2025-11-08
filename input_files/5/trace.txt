@@ -1,0 +1,4 @@
+FORK,  10  
+IF_CHILD, 0 
+EXEC program1, 50 // checking if mem alloc will fail for program1 being 500mb
+ENDIF, 0

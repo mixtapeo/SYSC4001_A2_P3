@@ -1,12 +1,6 @@
-EXEC program1, 40 // Test case 4 — Nested EXEC + FORK inside an external program (tests recursion and parent/child flow)
-program1, 12
-program2, 5
-CPU, 20
 FORK, 10
 IF_CHILD, 0
-EXEC program2, 30
+EXEC program1, 12 // test if both programs (same size in external files) are loaded to partition 4 as they are 10mb, and fit partition 4.
 IF_PARENT, 0
-CPU, 15
+EXEC program2, 10
 ENDIF, 0
-CPU, 10
-CPU, 50

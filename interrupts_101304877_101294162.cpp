@@ -154,6 +154,11 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
                 execution += child_exec;
                 system_status += child_status;
                 current_time = child_time;
+                // If child failed EXEC memory allocation, abort parent
+                if (child_exec.find("memory allocation failed for EXEC") != std::string::npos)
+                {
+                    return {execution, system_status, current_time};
+                }
             }
 
             // Child finished: restore parent as current and remove parent from wait_queue
@@ -192,7 +197,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             }
 
             // Log program size (use duration_intr for ISR step duration)
-            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", Program is " + std::to_string(prog_size) + " Mb large\n";
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", " + program_name + " is " + std::to_string(prog_size) + " Mb large\n";
             current_time += duration_intr;
 
             // Before allocating new partition, free current partition (if any)
@@ -212,10 +217,11 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             if (!allocate_memory(&current))
             {
                 execution += std::to_string(current_time) + ", 0, memory allocation failed for EXEC (PID " + std::to_string(current.PID) + ")\n";
-                break;
+                // stop entire simulation on failed EXEC to avoid repeating in parent
+                return {execution, system_status, current_time};
             }
 
-            execution += std::to_string(current_time) + ", " + std::to_string(loader_time) + ", loading program into memory\n";
+            execution += std::to_string(current_time) + ", " + std::to_string(loader_time) + ", loading " + program_name + " into memory\n";
             current_time += loader_time;
 
             // Marking partition and updating PCB (use small fixed times to match samples)
@@ -232,7 +238,6 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             // Snapshot system status right after EXEC before running external trace
             system_status += "time: " + std::to_string(current_time) + "; current trace: " + trace + "\n";
-            system_status += "c copied the new process onto init. Notice how the partition was reassigned\n"; // explanatory line requested
             system_status += print_PCB(current, wait_queue);
 
             // Run the new program's trace immediately (simulate executing the loaded program)
@@ -251,6 +256,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
                         execution += child_exec;
                         system_status += child_status;
                         current_time = child_time;
+                        free_memory(&current);
                     }
                 }
                 else

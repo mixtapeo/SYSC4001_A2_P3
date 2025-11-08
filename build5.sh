@@ -4,7 +4,9 @@ else
 	rm bin/*
 fi
 g++ -g -O0 -I . -o bin/interrupts interrupts_101304877_101294162.cpp
-./bin/interrupts trace.txt vector_table.txt device_table.txt external_files.txt
+cp output_files/5/program1.txt .
+./bin/interrupts input_files/5/trace.txt input_files/5/vector_table.txt input_files/5/device_table.txt input_files/5/external_files.txt
+rm program1.txt
 cat execution.txt
 echo "-------SYSTEM STATUS--------"
 cat system_status.txt
